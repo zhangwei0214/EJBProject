@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>me.ben.ejb</groupId>
+    <artifactId>EJB-Project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <packaging>ear</packaging>
+  <artifactId>EARProj</artifactId>
+  
+  <dependencies>  
+        <dependency>  
+            <groupId>me.ben.ejb</groupId>  
+             <artifactId>EJB-Hello</artifactId>    
+            <version>${project.version}</version>
+            <type>ejb</type>
+        </dependency>  
+        <dependency>  
+            <groupId>me.ben.ejb</groupId>  
+            <artifactId>EJB-Client</artifactId>  
+            <version>${project.version}</version>  
+            <type>war</type>  
+        </dependency>  
+    </dependencies>
+  <build>  
+        <finalName>${artifactId}</finalName>
+        <pluginManagement>
+        <plugins>  
+            <plugin>  
+                <artifactId>maven-ear-plugin</artifactId>  
+                <version>2.10</version>  
+                <configuration>  
+                    <!--<generateModuleId>true</generateModuleId>-->  
+  
+                    <!--指定打包范围，避免无用jar混乱加入-->  
+                    <!--<packagingIncludes>META-INF/**,**/acme-*.jar,**/acme-*.war</packagingIncludes>-->  
+                    <!--<packagingExcludes></packagingExcludes>-->  
+  
+                    <!--打包指定目录lib-->  
+                    <defaultLibBundleDir>lib/</defaultLibBundleDir>  
+                    <!--将多个war的共享包提取到父级别-->  
+                    <skinnyWars>true</skinnyWars>  
+  
+                    <!--<includeLibInApplicationXml>true</includeLibInApplicationXml>-->  
+  
+                    <!--jboss 定制-->  
+                    <!--<jboss>-->  
+                        <!--<version>5</version>-->  
+                        <!--<module-order>strict</module-order>-->  
+                        <!--<unauthenticated-principal>guest</unauthenticated-principal>-->  
+                        <!--<loader-repository>com.foo:loader=foo-application-1.0.ear</loader-repository>-->  
+                    <!--</jboss>-->  
+  
+                    <modules>  
+  
+                        <!--jarModule：用于添加第三方库，配合includeInApplicationXml，可使其像一个开发的模块-->  
+                        <!-- <jarModule>  -->
+                            <!--<groupId>com.conquer.eden</groupId>-->  
+                            <!--<artifactId>ejb3</artifactId>-->  
+                            <!--<bundleFileName>ejb3.jar</bundleFileName>-->  
+  
+                            <!--<includeInApplicationXml>true</includeInApplicationXml>-->  
+  
+                            <!--<bundleDir>APP-INF/lib</bundleDir> 只更改位置，名称保持不变-->  
+                            <!--<uri>APP-INF/lib/anotherName-1.2.3.jar</uri> 可定制位置和名称，需要指定名称-->  
+                            <!--<excluded>true</excluded>-->  
+  
+                            <!--<moduleId>ejb3-id</moduleId>-->  
+                        <!-- </jarModule>  -->
+                        <ejbModule>  
+                            <groupId>me.ben.ejb</groupId>  
+                            <artifactId>EJB-Hello</artifactId>  
+                            <bundleFileName>EJB-Hello.jar</bundleFileName>  
+                        </ejbModule>  
+                        <webModule>  
+                            <groupId>me.ben.ejb</groupId>  
+                            <artifactId>EJB-Client</artifactId>  
+                            <bundleFileName>EJB-Client.war</bundleFileName>  
+  
+                            <!--<moduleId>webdemo-id</moduleId>-->  
+                        </webModule>  
+                    </modules>  
+                </configuration>  
+            </plugin>
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+            <!-- eclipse 生成的plugin 解决eclipse下的报错问题，  与命令行mvn执行无关 -->
+            <plugin>
+            	<groupId>org.eclipse.m2e</groupId>
+            	<artifactId>lifecycle-mapping</artifactId>
+            	<version>1.0.0</version>
+            	<configuration>
+            		<lifecycleMappingMetadata>
+            			<pluginExecutions>
+            				<pluginExecution>
+            					<pluginExecutionFilter>
+            						<groupId>
+            							org.apache.maven.plugins
+            						</groupId>
+            						<artifactId>
+            							maven-ear-plugin
+            						</artifactId>
+            						<versionRange>[2.10,)</versionRange>
+            						<goals>
+            							<goal>
+            								generate-application-xml
+            							</goal>
+            						</goals>
+            					</pluginExecutionFilter>
+            					<action>
+            						<ignore></ignore>
+            					</action>
+            				</pluginExecution>
+            			</pluginExecutions>
+            		</lifecycleMappingMetadata>
+            	</configuration>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build> 
+</project>
